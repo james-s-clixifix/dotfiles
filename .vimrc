@@ -1,4 +1,31 @@
-execute pathogen#infect()
+" Before this can run - you need to install https://github.com/junegunn/vim-plug
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-bundler'
+
+Plug 'preservim/nerdtree'
+Plug 'kchmck/vim-coffee-script'
+Plug 'posva/vim-vue'
+
+Plug 'rking/ag.vim'
+
+Plug 'janx/vim-rubytest'
+let g:rubytest_output = 'quickfix'
+
+
+Plug 'ntpeters/vim-better-whitespace'
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save = 1
 
 " 2 Space indentation
 set ts=2 et sw=2
@@ -16,60 +43,6 @@ let NERDTreeShowHidden=1
 " Map our leader key
 let mapleader = ','
 
-syntax on
-set background=dark
-colorscheme monokai
-"let g:solarized_termcolors=256
-
-" Force red highlight for trailing whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
-
-" Hack for Zsh Powerline tool
-if ! has('gui_running')
-  set ttimeoutlen=10
-  augroup FastEscape
-    autocmd!
-    au InsertEnter * set timeoutlen=0
-    au InsertLeave * set timeoutlen=1000
-  augroup END
-endif
-
-if $TMUX == ''
-  set clipboard=unnamed
-endif
-
-" Change font style to be bigger and more readable when using gvim
-set guifont=Menlo\ Regular:h13
-
-" Rspec Runner
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-" Remove trailing whitespace on save
-fun! <SID>StripTrailingWhitespaces()
-  let l = line(".")
-  let c = col(".")
-  %s/\s\+$//e
-  call cursor(l, c)
-endfun
-autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-function! TrimWhiteSpace()
-  %s/\s\+$//e
-endfunction
-autocmd BufWritePre     *.* :call TrimWhiteSpace()
-
-" Suggested column size
-if exists('+colorcolumn')
-  set colorcolumn=80
-else
-  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-endif
-
-autocmd filetype crontab setlocal nobackup nowritebackup
+set colorcolumn=160
+" Initialize plugin system
+call plug#end()
